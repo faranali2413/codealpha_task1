@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Gallery</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="gallery-container">
+        <div class="gallery-item" data-index="1"><img src="Gallery-img1.webp" alt=""></div>
+        <div class="gallery-item" data-index="2"><img src="Gallery-img2.webp" alt=""></div>
+        <div class="gallery-item" data-index="3"><img src="Gallery-img3.webp" alt=""></div>
+        <div class="gallery-item" data-index="4"><img src="Gallery-img4.webp" alt=""></div>
+        <div class="gallery-item" data-index="5"><img src="Gallery-img5.webp" alt=""></div>
+        <div class="gallery-item" data-index="6"><img src="Gallery-img6.webp" alt=""></div>
+        <div class="gallery-item" data-index="7"><img src="Gallery-img7.webp" alt=""></div>
+        <div class="gallery-item" data-index="8"><img src="Gallery-img8.webp" alt=""></div>
+        <div class="gallery-item" data-index="9"><img src="Gallery-img9.webp" alt=""></div>
+    </div>
+    <div class="btn1">
+        <a href=""><button id="btn">Load More</button></a>
+    </div>
+
+    <script>
+        const galleryitem = document.getElementsByClassName("gallery-item");
+        // Create element for lightbox
+        const lightBoxContainer = document.createElement("div");
+        // for basic area
+        const lightBoxContent = document.createElement("div");
+        // for images
+        const lightBoxImg = document.createElement("img");
+        // for prev button to change images
+        const lightBoxPrev = document.createElement("div");
+        // for next button
+        const lightBoxNext = document.createElement("div");
+
+        // create classlist
+
+        lightBoxContainer.classList.add('lightbox');
+        lightBoxContent.classList.add('lightbox-content');
+        lightBoxPrev.classList.add("fa", "fa-angle-left", "lightbox-prev");
+        lightBoxNext.classList.add("fa", "fa-angle-right", "lightbox-next");
+
+        lightBoxContainer.appendChild(lightBoxContent);
+        lightBoxContent.appendChild(lightBoxImg);
+        lightBoxContent.appendChild(lightBoxPrev);
+        lightBoxContent.appendChild(lightBoxNext);
+        document.body.appendChild(lightBoxContainer);
+
+        let index = 1;
+
+        // create function
+
+        function showLightBox(n){
+            if (n > galleryitem.length){
+                index = 1;
+            } else if(n < 1){
+                index = galleryitem.length;
+            }
+
+            let imageLocation = galleryitem[index-1].children[0].getAttribute("src");
+            lightBoxImg.setAttribute("src", imageLocation);
+        }
+
+        function currentImage(){
+            lightBoxContainer.style.display="block"
+
+            let imageIndex = parseInt(this.getAttribute("data-index"));
+            showLightBox(index = imageIndex);
+        }
+
+        for (let i = 0; i<galleryitem.length; i++){
+            galleryitem[i].addEventListener("click", currentImage);
+        }
+
+        function sliderImage(n){
+            showLightBox(index += n);
+        }
+        function prevImage(){
+            sliderImage(-1);
+        }
+        function nextImage(){
+            sliderImage(1);
+        }
+
+        lightBoxPrev.addEventListener("click", prevImage);
+        lightBoxNext.addEventListener("click", nextImage);
+
+        // close lightbox
+
+        function closeLightBox(){
+            if(this === event.target){
+                lightBoxContainer.style.display = "none";
+            }
+        }
+
+        lightBoxContainer.addEventListener("click",closeLightBox);
+    </script>
+</body>
+</html>
